@@ -7,3 +7,4 @@ scikit-learn
 accelerate
 janome
 pyngrok
+rouge-score  # ← ROUGEスコア用（新しいやつ）
