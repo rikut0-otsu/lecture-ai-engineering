@@ -43,6 +43,27 @@ def display_chat_page(pipe):
         st.markdown(st.session_state.current_answer) # Markdownで表示
         st.info(f"応答時間: {st.session_state.response_time:.2f}秒")
 
+        ##########################　追加箇所
+        # 
+        #  --- ここで評価指標をリアルタイム表示 ---
+        from metrics import calculate_metrics
+        bleu_score, similarity_score, word_count, relevance_score, rouge_score = calculate_metrics(
+            st.session_state.current_answer,
+            ""  # フィードバック前なので正解なしでも動かす
+        )
+
+        # 正解がないことを明記
+        st.warning("⚠️ 正解の入力がないため、評価指標は参考値（基本0）です。")
+        st.write("### 評価指標（参考）")
+        cols = st.columns(5)
+        cols[0].metric("BLEU", f"{bleu_score:.4f}")
+        cols[1].metric("類似度", f"{similarity_score:.4f}")
+        cols[2].metric("関連性", f"{relevance_score:.4f}")
+        cols[3].metric("ROUGE", f"{rouge_score:.4f}")
+        cols[4].metric("単語数", f"{word_count}")
+
+        ##########################　追加箇所
+
         # フィードバックフォームを表示 (まだフィードバックされていない場合)
         if not st.session_state.feedback_given:
             display_feedback_form()
@@ -222,7 +243,7 @@ def display_metrics_analysis(history_df):
 
     # 全体の評価指標の統計
     st.write("##### 評価指標の統計")
-    stats_cols = ['response_time', 'bleu_score', 'similarity_score', 'word_count', 'relevance_score']
+    stats_cols = ['response_time', 'bleu_score', 'similarity_score', 'word_count', 'relevance_score', 'rouge_score']
     valid_stats_cols = [c for c in stats_cols if c in analysis_df.columns and analysis_df[c].notna().any()]
     if valid_stats_cols:
         metrics_stats = analysis_df[valid_stats_cols].describe()
