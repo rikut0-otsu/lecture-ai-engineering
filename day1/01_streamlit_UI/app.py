@@ -15,9 +15,9 @@ import time
 # ============================================
 # タイトルと説明
 # ============================================
-st.title("Streamlit 初心者向けデモ")
-st.markdown("### コメントを解除しながらStreamlitの機能を学びましょう")
-st.markdown("このデモコードでは、コメントアウトされた部分を順番に解除しながらUIの変化を確認できます。")
+st.title("Streamlit 初心者向けデモ変更版")
+st.markdown("### 生成AIアンケート！！")
+# st.markdown("このデモコードでは、コメントアウトされた部分を順番に解除しながらUIの変化を確認できます。")
 
 # ============================================
 # サイドバー 
@@ -28,12 +28,37 @@ st.sidebar.info("コードのコメントを解除して、Streamlitのさまざ
 # ============================================
 # 基本的なUI要素
 # ============================================
-st.header("基本的なUI要素")
+# st.header("基本的なUI要素")
 
 # テキスト入力
 st.subheader("テキスト入力")
 name = st.text_input("あなたの名前", "ゲスト")
 st.write(f"こんにちは、{name}さん！")
+
+
+############################################変更箇所
+st.header("アンケート：好きな生成AIは？")
+
+ai_list = ["ChatGPT", "Claude", "Gemini", "DeepSeek", "Llama", "その他"]
+
+if "votes" not in st.session_state:
+    st.session_state.votes = {ai: 0 for ai in ai_list}
+
+ai_choice = st.radio("あなたが好きな生成AIを選んでください", ai_list)
+
+if st.button("投票する", key="vote_button"):
+    st.session_state.votes[ai_choice] += 1
+    st.success(f"{ai_choice} に投票しました！")
+    st.balloons() #風船出すw
+
+st.write("### 投票結果（このセッション内）:")
+for ai, count in st.session_state.votes.items():
+    st.write(f"{ai}: {count}票")
+
+
+############################################変更箇所
+
+
 
 # ボタン
 # st.subheader("ボタン")
