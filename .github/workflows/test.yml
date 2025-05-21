@@ -2,7 +2,7 @@ name: ML Pipeline CI
 
 on:
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master, develop ]
 
 jobs:
   test:
