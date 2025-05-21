@@ -305,3 +305,4 @@ if __name__ == "__main__":
             print(f"旧モデルとの比較に失敗: {e}")
 
     compare_with_old_model(model, X_test, y_test)
+# trigger CI rerun
