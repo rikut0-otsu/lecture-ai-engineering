@@ -286,3 +286,23 @@ if __name__ == "__main__":
     # ベースラインとの比較
     baseline_ok = ModelTester.compare_with_baseline(metrics)
     print(f"ベースライン比較: {'合格' if baseline_ok else '不合格'}")
+
+
+    # 旧モデルとの比較（演習1のモデル）
+    def compare_with_old_model(new_model, X_test, y_test):
+        try:
+            old_model = ModelTester.load_model("day5/演習1/models/titanic_model.pkl")
+            old_metrics = ModelTester.evaluate_model(old_model, X_test, y_test)
+            new_metrics = ModelTester.evaluate_model(new_model, X_test, y_test)
+
+            assert new_metrics["accuracy"] >= old_metrics["accuracy"] - 0.01, (
+                f"新モデルの精度が劣化しています: {new_metrics['accuracy']} vs {old_metrics['accuracy']}"
+            )
+            assert new_metrics["inference_time"] <= old_metrics["inference_time"] * 1.5, (
+                f"新モデルの推論時間が遅くなっています: {new_metrics['inference_time']}秒 vs {old_metrics['inference_time']}秒"
+            )
+            print("旧モデルとの比較：性能劣化なし")
+        except Exception as e:
+            print(f"旧モデルとの比較に失敗: {e}")
+
+    compare_with_old_model(model, X_test, y_test)
