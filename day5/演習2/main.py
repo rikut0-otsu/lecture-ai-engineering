@@ -41,7 +41,6 @@ class DataLoader:
                 print(f"⚠️ CSVファイルが見つかりません: {local_path}")
                 return None
 
-
         # if path is None:
         #     # 自分のファイルの場所基準で解決する
         #     current_dir = os.path.dirname(__file__)
