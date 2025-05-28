@@ -15,16 +15,41 @@ import great_expectations as gx
 class DataLoader:
     """データロードを行うクラス"""
 
+    # @staticmethod
+    # def load_titanic_data(path=None):
+    #     """Titanicデータセットを読み込む"""
+    #     if path:
+    #         return pd.read_csv(path)
+    #     else:
+    #         # ローカルのファイル
+    #         local_path = "data/Titanic.csv"
+    #         if os.path.exists(local_path):
+    #             return pd.read_csv(local_path)
     @staticmethod
     def load_titanic_data(path=None):
         """Titanicデータセットを読み込む"""
         if path:
             return pd.read_csv(path)
         else:
-            # ローカルのファイル
-            local_path = "data/Titanic.csv"
+            # __file__ を使って、演習2フォルダを起点にする➞これがエラーの可能性大
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            local_path = os.path.join(base_dir, "data", "Titanic.csv")
+
             if os.path.exists(local_path):
                 return pd.read_csv(local_path)
+            else:
+                print(f"⚠️ CSVファイルが見つかりません: {local_path}")
+                return None
+
+
+        # if path is None:
+        #     # 自分のファイルの場所基準で解決する
+        #     current_dir = os.path.dirname(__file__)
+        #     path = os.path.join(current_dir, "data", "Titanic.csv")
+        # if not os.path.exists(path):
+        #     print(f"[WARNING] ファイルが見つかりません: {path}")
+        #     return None
+        # return pd.read_csv(path)
 
     @staticmethod
     def preprocess_titanic_data(data):
